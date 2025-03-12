@@ -30,14 +30,15 @@ def draw_window(red,yellow):
     pygame.draw.rect(WIN,BLACK,BORDER)
     WIN.blit(YELLOW_SPACESHIP,(yellow.x,yellow.y))
     WIN.blit(RED_SPACESHIP,(red.x, red.y))
-    #pygame.draw.rect(WIN,BLACK,yellow)
+    pygame.draw.rect(WIN,BLACK,yellow)
+    pygame.draw.rect(WIN,BLACK,red)
 
     pygame.display.update()
 
 def yellow_handle_movement(keys_pressed,yellow):
     if keys_pressed[pygame.K_a] and yellow.x - VEL > 0:  # LEFT
         yellow.x -= VEL
-    if keys_pressed[pygame.K_d] and yellow.x + yellow.width < BORDER.x:  # RIGHT
+    if keys_pressed[pygame.K_d] and yellow.x < BORDER.x - VEL - yellow.width:  # RIGHT
         yellow.x += VEL
         print(BORDER.x - yellow.x)
     if keys_pressed[pygame.K_w] and yellow.y -VEL > 0:  # UP
@@ -46,7 +47,7 @@ def yellow_handle_movement(keys_pressed,yellow):
         yellow.y += VEL
 
 def red_handle_movement(keys_pressed,red):
-    if keys_pressed[pygame.K_LEFT] and red.x > BORDER.x + 25 :  # LEFT
+    if keys_pressed[pygame.K_LEFT] and red.x > BORDER.x + 10 + VEL :  # LEFT
         red.x -= VEL
         print (BORDER.x - red.x)
     if keys_pressed[pygame.K_RIGHT] and red.x + red.width + VEL < WIDTH:  # RIGHT
