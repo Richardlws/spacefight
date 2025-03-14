@@ -1,7 +1,7 @@
 import pygame
 import os
 pygame.font.init()
-
+pygame.init()
 WIDTH,HEIGHT = 900,600
 
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -13,6 +13,11 @@ RED = (255,0,0)
 YELLOW = (255,255,0)
 
 BORDER = pygame.Rect(WIDTH//2-5,0,10,HEIGHT)
+
+BULLET_HIT_SOUND = pygame.mixer.Sound(
+    os.path.join('attach','Grenade+1.mp3'))
+BULLET_FIRE_SOUND = pygame.mixer.Sound(
+    os.path.join('attach','Gun+Silencer.mp3'))
 HEALTH_FONT = pygame.font.SysFont('comicsans',40)
 WINNER_FONT = pygame.font.SysFont('comicsans',40)
 FPS = 60
@@ -65,14 +70,14 @@ def draw_window(red,yellow,red_bullets,yellow_bullets,red_health,yellow_health):
     pygame.display.update()
 
 def yellow_handle_movement(keys_pressed,yellow):
-    if keys_pressed[pygame.K_a] and yellow.x - VEL > 0:  # LEFT
+    if keys_pressed[pygame.K_t] and yellow.x - VEL > 0:  # LEFT
         yellow.x -= VEL
-    if keys_pressed[pygame.K_d] and yellow.x < BORDER.x - VEL - yellow.width:  # RIGHT
+    if keys_pressed[pygame.K_g] and yellow.x < BORDER.x - VEL - yellow.width:  # RIGHT
         yellow.x += VEL
         #print(BORDER.x - yellow.x)
-    if keys_pressed[pygame.K_w] and yellow.y -VEL > 0:  # UP
+    if keys_pressed[pygame.K_f] and yellow.y -VEL > 0:  # UP
         yellow.y -= VEL
-    if keys_pressed[pygame.K_s] and yellow.y + yellow.height + VEL< HEIGHT - 15:  # DOWN
+    if keys_pressed[pygame.K_h] and yellow.y + yellow.height + VEL< HEIGHT - 15:  # DOWN
         yellow.y += VEL
 
 def red_handle_movement(keys_pressed,red):
@@ -134,16 +139,22 @@ def main():
                     bullet = pygame.Rect(
                         yellow.x+yellow.width,yellow.y+yellow.height//2,10,5)
                     yellow_bullets.append(bullet)
+                    BULLET_FIRE_SOUND.play()
 
                 if event.key == pygame.K_RCTRL and len(red_bullets) < MAX_BULLETS :
                     bullet = pygame.Rect(
                         red.x, red.y + red.height//2, 10, 5)
                     red_bullets.append(bullet)
+                    BULLET_FIRE_SOUND.play()
+
+
             if event.type == RED_HIT:
                 red_health -=1
+                BULLET_HIT_SOUND.play()
 
             if event.type == YELLOW_HIT:
                 yellow_health -=1
+                BULLET_HIT_SOUND.play()
 
         winner_text = ""
         if red_health <= 0:
