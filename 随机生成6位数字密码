@@ -1,0 +1,25 @@
+
+# Python writing files (.txt,.json,.csv)
+import random
+num = int(input("请输入你需要几个6位数字密码： "))
+
+file_path = "secret_num.txt"
+txt_data = str()
+for rows in range(0,num):
+    for i in range(6):
+        txt_data+=str(random.randint(0,9))
+    txt_data+=" "
+
+#try:
+with open(file_path, "a",newline = "") as file:
+    #writer = csv.writer(file)
+    #for row in employees:
+     #   writer.writerow(row)
+    #json.dump(employees,file,indent = 4)
+    file.write(txt_data)
+    #for employee in employees:
+    #    file.write(employee + " ")
+    print(f"txt file '{file_path}'was created.")
+#except FileExistsError:
+#    print("That file already existis!")
+
